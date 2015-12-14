@@ -7,12 +7,10 @@
 
 int main()
 {
-	Vector2F f1;
-	Vector3F f2 = { 2, 2 };
+	lgeo::RectangleF rect1{ { 0, 0 }, { 1, 1 } };
+	lgeo::RectangleF rect2{ { 0.91, 0.1 }, { .9, .9 } };
 
-	std::ifstream f("test.txt");
-	f >> f1;
-	std::cout << f1 << std::endl;
+	std::cout << lgeo::intersection(rect1, rect2) << std::endl;
 
 	system("PAUSE");
 	return EXIT_SUCCESS;
