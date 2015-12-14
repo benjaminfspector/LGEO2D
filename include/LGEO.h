@@ -9,5 +9,5 @@
 namespace lgeo
 {
 #include "vector/vector.h"
-#include "geometry2d/Rectangle.h"
+#include "geometry2d/geometry2d.h"
 }

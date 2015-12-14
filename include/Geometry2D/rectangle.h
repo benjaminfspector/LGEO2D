@@ -23,7 +23,16 @@ public:
 		position = pos;
 		setSize(s);
 	}
-
+	template<class T2> Rectangle<T>& operator=(const Rectangle<T2> & r)
+	{
+		position = r.position;
+		size = r.getSize();
+		return *this;
+	}
+	static bool operator==(const Rectangle<T2> & r1, const Rectangle<T2> & r2)
+	{
+		return r1.position == r2.position && r1.size == r2.size;
+	}
 	Vector2<T> getSize() const
 	{
 		return size;
@@ -43,13 +52,17 @@ public:
 			size.y = -s.y;
 		}
 	}
-	T getArea()
+	T getArea() const
 	{
 		return size.x * size.y;
 	}
-	T getPerimeter()
+	T getPerimeter() const
 	{
 		return size.x + size.x + size.y + size.y;
+	}
+	template<class U> bool contains(const Vector2<U> & p) const
+	{
+		return p.x >= position.x && p.x <= position.x + size.x && p.y >= position.y && p.y <= position.y + size.y;
 	}
 
 	template<class U> friend bool intersects(const Rectangle<U> & r1, const Rectangle<U> & r2);
@@ -58,7 +71,7 @@ public:
 
 template<class U> bool intersects(const Rectangle<U> & r1, const Rectangle<U> & r2)
 {
-	return r1.position.x + r1.size.x > r2.position.x && r2.position.x + r2.size.x > r1.position.x && r1.position.y + r1.size.y > r2.position.y && r2.position.y + r2.size.y > r1.position.y;
+	return r1.position.x + r1.size.x >= r2.position.x && r2.position.x + r2.size.x >= r1.position.x && r1.position.y + r1.size.y >= r2.position.y && r2.position.y + r2.size.y >= r1.position.y;
 }
 
 template<class U> Rectangle<U> intersection(const Rectangle<U> & r1, const Rectangle<U> & r2)
@@ -66,8 +79,7 @@ template<class U> Rectangle<U> intersection(const Rectangle<U> & r1, const Recta
 	if(intersects(r1, r2))
 	{
 		Vector2<U> min = { r1.position.x > r2.position.x ? r1.position.x : r2.position.x, r1.position.y > r2.position.y ? r1.position.y : r2.position.y };
-		Vector2<U> s1 = r1.getSize(), s2 = r2.getSize();
-		Vector2<U> max = { r1.position.x + s1.x < r2.position.x + s2.x ? r1.position.x + s1.x : r2.position.x + s2.x, r1.position.y + s1.y < r2.position.y + s2.y ? r1.position.y + s1.y : r2.position.y + s2.y };
+		Vector2<U> max = { r1.position.x + r1.size.x < r2.position.x + r2.size.x ? r1.position.x + r1.size.x : r2.position.x + r2.size.x, r1.position.y + r1.size.y < r2.position.y + r2.size.y ? r1.position.y + r1.size.y : r2.position.y + r2.size.y };
 		return Rectangle<U>(min, max - min);
 	}
 	return Rectangle<U>();

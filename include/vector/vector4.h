@@ -12,7 +12,11 @@ template<class T> struct Vector4
 		w = p.w;
 		return *this;
 	}
-	template<class T> Vector4<T>& operator+=(const Vector4<T> & p)
+	static bool operator==(const Vector4<T> & p1, const Vector4<T> & p2)
+	{
+		return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z && p1.w == p2.w;
+	}
+	Vector4<T>& operator+=(const Vector4<T> & p)
 	{
 		x += p.x;
 		y += p.y;
@@ -20,7 +24,7 @@ template<class T> struct Vector4
 		w += p.w;
 		return *this;
 	}
-	template<class T> Vector4<T>& operator-=(const Vector4<T> & p)
+	Vector4<T>& operator-=(const Vector4<T> & p)
 	{
 		x -= p.x;
 		y -= p.y;
@@ -28,7 +32,7 @@ template<class T> struct Vector4
 		w -= p.w;
 		return *this;
 	}
-	template<class T> Vector4<T>& operator*=(const T q)
+	Vector4<T>& operator*=(const T q)
 	{
 		x *= q;
 		y *= q;
@@ -36,7 +40,7 @@ template<class T> struct Vector4
 		w *= q;
 		return *this;
 	}
-	template<class T> Vector4<T>& operator/=(const T q)
+	Vector4<T>& operator/=(const T q)
 	{
 		x /= q;
 		y /= q;
@@ -83,11 +87,7 @@ template<class T> std::istream & operator>>(std::istream & i, Vector4<T> & v)
 
 typedef Vector4<float> Vector4F;
 typedef Vector4<short> Vector4S;
-typedef Vector4<unsigned short> Vector4US;
-typedef Vector4<unsigned int> Vector4UI;
 typedef Vector4<int> Vector4I;
-typedef Vector4<unsigned long> Vector4UL;
 typedef Vector4<long> Vector4L;
-typedef Vector4<unsigned long long> Vector4ULL;
 typedef Vector4<long long> Vector4LL;
 typedef Vector4<double> Vector4D;

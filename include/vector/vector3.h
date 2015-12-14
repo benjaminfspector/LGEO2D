@@ -11,28 +11,32 @@ template<class T> struct Vector3
 		z = p.z;
 		return *this;
 	}
-	template<class T> Vector3<T>& operator+=(const Vector3<T> & p)
+	static bool operator==(const Vector3<T> & p1, const Vector3<T> & p2)
+	{
+		return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
+	}
+	Vector3<T>& operator+=(const Vector3<T> & p)
 	{
 		x += p.x;
 		y += p.y;
 		z += p.z;
 		return *this;
 	}
-	template<class T> Vector3<T>& operator-=(const Vector3<T> & p)
+	Vector3<T>& operator-=(const Vector3<T> & p)
 	{
 		x -= p.x;
 		y -= p.y;
 		z -= p.z;
 		return *this;
 	}
-	template<class T> Vector3<T>& operator*=(const T q)
+	Vector3<T>& operator*=(const T q)
 	{
 		x *= q;
 		y *= q;
 		z *= q;
 		return *this;
 	}
-	template<class T> Vector3<T>& operator/=(const T q)
+	Vector3<T>& operator/=(const T q)
 	{
 		x /= q;
 		y /= q;
@@ -78,11 +82,7 @@ template<class T> std::istream & operator>>(std::istream & i, Vector3<T> & v)
 
 typedef Vector3<float> Vector3F;
 typedef Vector3<short> Vector3S;
-typedef Vector3<unsigned short> Vector3US;
-typedef Vector3<unsigned int> Vector3UI;
 typedef Vector3<int> Vector3I;
-typedef Vector3<unsigned long> Vector3UL;
 typedef Vector3<long> Vector3L;
-typedef Vector3<unsigned long long> Vector3ULL;
 typedef Vector3<long long> Vector3LL;
 typedef Vector3<double> Vector3D;
