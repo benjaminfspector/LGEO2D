@@ -29,10 +29,6 @@ public:
 		size = r.getSize();
 		return *this;
 	}
-	static bool operator==(const Rectangle<T2> & r1, const Rectangle<T2> & r2)
-	{
-		return r1.position == r2.position && r1.size == r2.size;
-	}
 	Vector2<T> getSize() const
 	{
 		return size;
@@ -64,11 +60,20 @@ public:
 	{
 		return p.x >= position.x && p.x <= position.x + size.x && p.y >= position.y && p.y <= position.y + size.y;
 	}
+	template<class U> bool contains(const Rectangle<U> & p) const
+	{
+		return position.x <= p.position.x && position.y <= p.position.y && position.x + size.x >= p.position.x + p.size.x && position.y + size.y >= p.position.y + p.size.y;
+	}
 
+	template<class U> friend bool operator==(const Rectangle<U> & r1, const Rectangle<U> & r2);
 	template<class U> friend bool intersects(const Rectangle<U> & r1, const Rectangle<U> & r2);
 	template<class U> friend Rectangle<U> intersection(const Rectangle<U> & r1, const Rectangle<U> & r2);
 };
 
+template<class T> bool operator==(const Rectangle<T> & r1, const Rectangle<T> & r2)
+{
+	return r1.position == r2.position && r1.size == r2.size;
+}
 template<class U> bool intersects(const Rectangle<U> & r1, const Rectangle<U> & r2)
 {
 	return r1.position.x + r1.size.x >= r2.position.x && r2.position.x + r2.size.x >= r1.position.x && r1.position.y + r1.size.y >= r2.position.y && r2.position.y + r2.size.y >= r1.position.y;

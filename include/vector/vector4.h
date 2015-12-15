@@ -12,10 +12,6 @@ template<class T> struct Vector4
 		w = p.w;
 		return *this;
 	}
-	static bool operator==(const Vector4<T> & p1, const Vector4<T> & p2)
-	{
-		return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z && p1.w == p2.w;
-	}
 	Vector4<T>& operator+=(const Vector4<T> & p)
 	{
 		x += p.x;
@@ -50,6 +46,10 @@ template<class T> struct Vector4
 	}
 };
 
+template<class T> bool operator==(const Vector4<T> & p1, const Vector4<T> & p2)
+{
+	return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z && p1.w == p2.w;
+}
 template<class T> Vector4<T> operator+(const Vector4<T> & p1, const Vector4<T> & p2)
 {
 	return{ p1.x + p2.x, p1.y + p2.y, p1.z + p2.z, p1.w + p2.w };

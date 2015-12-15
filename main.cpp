@@ -1,5 +1,7 @@
 #define LGEO_H
 
+#define LGEO_IO
+
 #include "include/LGEO.h"
 
 #include <iostream>
@@ -7,10 +9,10 @@
 
 int main()
 {
-	lgeo::RectangleF rect1{ { 0, 0 }, { 1, 1 } };
-	lgeo::RectangleF rect2{ { 0.91, 0.1 }, { .9, .9 } };
+	lgeo::RectangleD rect1{ { 0, 0.1 }, { 1, 1 } };
+	lgeo::RectangleD rect2{ { 0, 0 }, { 1, 1 } };
 
-	std::cout << lgeo::intersection(rect1, rect2) << std::endl;
+	std::cout << (rect2 == rect1) << std::endl;
 
 	system("PAUSE");
 	return EXIT_SUCCESS;
