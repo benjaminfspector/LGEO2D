@@ -22,7 +22,7 @@ int main()
 	lgeo::SegmentD s2{ { 0, 1 }, { RAND_MAX, 1 } };
 	for(int a = 0; a < TEST_SIZE; a++)
 	{
-		lgeo::intersection(s1, s2);
+		lgeo::intersects(s1, s2);
 	}
 	stop();
 

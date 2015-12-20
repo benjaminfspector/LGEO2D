@@ -6,13 +6,13 @@
 template<class T> class Line
 {
 public:
-	Vector2<T> p1, p2;
+	T slope, y_int;
 
 	Line() {}
 	Line(const Vector2<T> & v1, const Vector2<T> & v2)
 	{
-		p1 = v1;
-		p2 = v2;
+		slope = (v1.y - v2.y) / (v1.x - v2.x);
+		y_int = v1.y 
 	}
 	float getSlopeF() const
 	{
@@ -45,31 +45,22 @@ public:
 	}
 };
 
-template<class T> bool operator==(const Line<T> & s1, const Line<T> & s2)
+template<class T> bool operator==(const Line<T> & l1, const Line<T> & l2)
 {
-	return (s1.p1 == s2.p1 && s1.p2 == s2.p2) || (s1.p1 == s2.p2 && s1.p2 == s2.p1);
+	return l1.slope == l2.slope && l1.y_int == l2.y_int;
 }
-template<class T> bool intersects(const Line<T> & s1, const Line<T> & s2)
+template<class T> bool intersects(const Line<T> & l1, const Line<T> & l2)
 {
-	Orientation o1 = getOrientation(s1.p1, s1.p2, s2.p1), o2 = getOrientation(s1.p1, s1.p2, s2.p2), o3 = getOrientation(s2.p1, s2.p2, s1.p1), o4 = getOrientation(s2.p1, s2.p2, s1.p2);
-	if((o1 != o2 && o3 != o4) || s1 == s2 || ((o1 == COLLINEAR || o3 == COLLINEAR) && (s2.contains(s1.p1) || s2.contains(s1.p2)))) return true;
-	return false;
+	return l1.slope != l2.slope || l1.y_int == l2.y_int;
 }
-template<class T> Vector2<T> intersection(const Line<T> & s1, const Line<T> & s2)
+template<class T> Vector2<T> intersection(const Line<T> & l1, const Line<T> & l2)
 {
-	if(intersects(s1, s2))
+	if(intersects(l1, l2))
 	{
-		double slope1 = s1.getSlopeD(), slope2 = s2.getSlopeD();
-		double yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInt2 = s2.p1.y - (slope2*s2.p1.x);
-		T xVal = round((yInt1 - yInt2) / (slope2 - slope1));
+		T xVal = round((l1.y_int - l2.y_int) / (l2.slope - l1.slope));
 		return{ xVal, round(slope1 * xVal + yInt1) };
 	}
-	throw NO_INTERSECTION;
 }
 
 typedef Line<float> LineF;
-typedef Line<short> LineS;
-typedef Line<int> LineI;
-typedef Line<long> LineL;
-typedef Line<long long> LineLL;
 typedef Line<double> LineD;
