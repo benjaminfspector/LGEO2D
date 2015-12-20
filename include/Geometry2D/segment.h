@@ -58,15 +58,13 @@ template<class T> Relation intersects(const Segment<T> & s1, const Segment<T> & 
 }
 template<class T> Vector2<T> intersection(const Segment<T> & s1, const Segment<T> & s2)
 {
-	//Relation r = intersects(s1, s2);
-	//if(r == Relation::INTERSECTION)
-	{
-		double slope1 = s1.getSlopeD(), slope2 = s2.getSlopeD();
-		double yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInt2 = s2.p1.y - (slope2*s2.p1.x);
-		T xVal = round((yInt1 - yInt2) / (slope2 - slope1));
-		return { xVal, round(slope1 * xVal + yInt1) };
-	}
-	//throw r;
+	//It's faster to do the orientation-based intersection calculation than it is to find the intersection. However, this is faster here, because it batches the solution and checking.
+	double slope1 = s1.getSlopeD(), slope2 = s2.getSlopeD();
+	double yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInt2 = s2.p1.y - (slope2*s2.p1.x);
+	if(slope1 == slope2) throw yInt1 == yInt2 ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
+	T xVal = round((yInt1 - yInt2) / (slope2 - slope1));
+	if((s1.p1.x <= s1.p2.x ? xVal >= s1.p1.x && xVal <= s1.p2.x : xVal <= s1.p1.x && xVal >= s1.p2.x) && (s2.p1.x <= s2.p2.x ? xVal >= s2.p1.x && xVal <= s2.p2.x : xVal <= s2.p1.x && xVal >= s2.p2.x)) throw Relation::NO_INTERSECTION;
+	return { xVal, round(slope1 * xVal + yInt1) };
 }
 
 typedef Segment<float> SegmentF;
