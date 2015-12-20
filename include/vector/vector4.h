@@ -1,7 +1,8 @@
 #pragma once
 
-template<class T> struct Vector4
+template<class T> class Vector4
 {
+public:
 	T x, y, z, w;
 
 	template<class T2> Vector4<T>& operator=(const Vector4<T2> & p)
@@ -52,19 +53,19 @@ template<class T> bool operator==(const Vector4<T> & p1, const Vector4<T> & p2)
 }
 template<class T> Vector4<T> operator+(const Vector4<T> & p1, const Vector4<T> & p2)
 {
-	return{ p1.x + p2.x, p1.y + p2.y, p1.z + p2.z, p1.w + p2.w };
+	return Vector4<T>(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z, p1.w + p2.w);
 }
 template<class T> Vector4<T> operator-(const Vector4<T> & p1, const Vector4<T> & p2)
 {
-	return{ p1.x - p2.x, p1.y - p2.y, p1.z - p2.z, p1.w - p2.w };
+	return Vector4<T>(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z, p1.w - p2.w);
 }
 template<class T> Vector4<T> operator*(const Vector4<T> & p1, const T q)
 {
-	return{ p1.x * q, p1.y * q, p1.z * q, p1.w * q };
+	return Vector4<T>(p1.x * q, p1.y * q, p1.z * q, p1.w * q);
 }
 template<class T> Vector4<T> operator/(const Vector4<T> & p1, const T q)
 {
-	return{ p1.x / q, p1.y / q, p1.z / q, p1.w / q };
+	return Vector4<T>(p1.x / q, p1.y / q, p1.z / q, p1.w / q);
 }
 
 #ifdef LGEO_IO

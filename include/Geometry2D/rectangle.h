@@ -87,7 +87,7 @@ template<class U> Rectangle<U> intersection(const Rectangle<U> & r1, const Recta
 		Vector2<U> max = { r1.position.x + r1.size.x < r2.position.x + r2.size.x ? r1.position.x + r1.size.x : r2.position.x + r2.size.x, r1.position.y + r1.size.y < r2.position.y + r2.size.y ? r1.position.y + r1.size.y : r2.position.y + r2.size.y };
 		return Rectangle<U>(min, max - min);
 	}
-	return Rectangle<U>();
+	throw NO_INTERSECTION;
 }
 
 #ifdef LGEO_IO

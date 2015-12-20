@@ -1,7 +1,8 @@
 #pragma once
 
-template<class T> struct Vector2
+template<class T> class Vector2
 {
+public:
 	T x, y;
 
 	template<class T2> Vector2<T>& operator=(const Vector2<T2> & v)
@@ -42,19 +43,19 @@ template<class T> bool operator==(const Vector2<T> & p1, const Vector2<T> & p2)
 }
 template<class T> Vector2<T> operator+(const Vector2<T> & p1, const Vector2<T> & p2)
 {
-	return { p1.x + p2.x, p1.y + p2.y };
+	return Vector2<T>(p1.x + p2.x, p1.y + p2.y);
 }
 template<class T> Vector2<T> operator-(const Vector2<T> & p1, const Vector2<T> & p2)
 {
-	return { p1.x - p2.x, p1.y - p2.y };
+	return Vector2<T>(p1.x - p2.x, p1.y - p2.y);
 }
 template<class T> Vector2<T> operator*(const Vector2<T> & p, const T q)
 {
-	return { p1.x * q, p1.y * q };
+	return Vector2<T>(p1.x * q, p1.y * q);
 }
 template<class T> Vector2<T> operator/(const Vector2<T> & p1, const T q)
 {
-	return { p1.x / q, p1.y / q };
+	return Vector2<T>(p1.x / q, p1.y / q);
 }
 
 #ifdef LGEO_IO
