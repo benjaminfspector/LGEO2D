@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 
-#define TEST_SIZE 10000000
+#define TEST_SIZE 100000000
 
 int main()
 {
@@ -18,11 +18,12 @@ int main()
 	timerInit(2800000000ll);
 
 	setup(TEST_SIZE);
-	lgeo::SegmentD s1{ { 1, RAND_MAX }, { 1, 0 } };
-	lgeo::SegmentD s2{ { 0, 1 }, { RAND_MAX, 1 } };
+	lgeo::LineD l{ { 0, 43 }, { 8, 27 } };
+
 	for(int a = 0; a < TEST_SIZE; a++)
 	{
-		lgeo::intersects(s1, s2);
+		l.getXFromY(633);
+		//std::cout <<  << std::endl;
 	}
 	stop();
 

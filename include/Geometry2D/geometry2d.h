@@ -18,3 +18,4 @@ template<class T> Orientation getOrientation(Vector2<T> p1, Vector2<T> p2, Vecto
 //Include line, ray, and polygon later.
 #include "segment.h"
 #include "rectangle.h"
+#include "line.h"

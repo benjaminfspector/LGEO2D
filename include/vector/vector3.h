@@ -5,6 +5,13 @@ template<class T> class Vector3
 public:
 	T x, y, z;
 
+	Vector3() {}
+	Vector3(T xN, T yN, T zN)
+	{
+		x = xN;
+		y = yN;
+		z = zN;
+	}
 	template<class T2> Vector3<T>& operator=(const Vector3<T2> & p)
 	{
 		x = p.x;
@@ -46,6 +53,10 @@ template<class T> bool operator==(const Vector3<T> & p1, const Vector3<T> & p2)
 {
 	return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
 }
+template<class T> bool operator!=(const Vector3<T> & p1, const Vector3<T> & p2)
+{
+	return p1.x != p2.x || p1.y != p2.y || p1.z != p2.z;
+}
 template<class T> Vector3<T> operator+(const Vector3<T> & p1, const Vector3<T> & p2)
 {
 	return Vector3<T>(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);
@@ -54,13 +65,21 @@ template<class T> Vector3<T> operator-(const Vector3<T> & p1, const Vector3<T> &
 {
 	return Vector3<T>(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
 }
-template<class T> Vector3<T> operator*(const Vector3<T> & p1, const T q)
+template<class T> Vector3<T> operator*(const Vector3<T> & p, const T q)
 {
-	return Vector3<T>(p1.x * q, p1.y * q, p1.z * q);
+	return Vector3<T>(p.x * q, p.y * q, p.z * q);
 }
-template<class T> Vector3<T> operator/(const Vector3<T> & p1, const T q)
+template<class T> Vector3<T> operator*(const T q, const Vector3<T> & p)
 {
-	return Vector3<T>(p1.x / q, p1.y / q, p1.z / q);
+	return Vector3<T>(p.x * q, p.y * q, p.z * q);
+}
+template<class T> Vector3<T> operator/(const Vector3<T> & p, const T q)
+{
+	return Vector3<T>(p.x / q, p.y / q, p.z / q);
+}
+template<class T> Vector3<T> operator/(const T q, const Vector3<T> & p)
+{
+	return Vector3<T>(p.x / q, p.y / q, p.z / q);
 }
 
 #ifdef LGEO_IO
