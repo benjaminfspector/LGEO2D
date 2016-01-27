@@ -1,6 +1,6 @@
 #pragma once
 
-template<class T> class Vector2
+template<typename T> class Vector2
 {
 public:
 	T x, y;
@@ -11,7 +11,7 @@ public:
 		x = xN;
 		y = yN;
 	}
-	template<class T2> Vector2<T>& operator=(const Vector2<T2> & v)
+	template<typename T2> Vector2<T>& operator=(const Vector2<T2> & v)
 	{
 		x = v.x;
 		y = v.y;
@@ -43,51 +43,51 @@ public:
 	}
 };
 
-template<class T> bool operator==(const Vector2<T> & p1, const Vector2<T> & p2)
+template<typename T> bool operator==(const Vector2<T> & p1, const Vector2<T> & p2)
 {
 	return p1.x == p2.x && p1.y == p2.y;
 }
-template<class T> bool operator!=(const Vector2<T> & p1, const Vector2<T> & p2)
+template<typename T> bool operator!=(const Vector2<T> & p1, const Vector2<T> & p2)
 {
 	return p1.x != p2.x || p1.y != p2.y;
 }
-template<class T> Vector2<T> operator+(const Vector2<T> & p1, const Vector2<T> & p2)
+template<typename T> Vector2<T> operator+(const Vector2<T> & p1, const Vector2<T> & p2)
 {
 	return Vector2<T>(p1.x + p2.x, p1.y + p2.y);
 }
-template<class T> Vector2<T> operator-(const Vector2<T> & p1, const Vector2<T> & p2)
+template<typename T> Vector2<T> operator-(const Vector2<T> & p1, const Vector2<T> & p2)
 {
 	return Vector2<T>(p1.x - p2.x, p1.y - p2.y);
 }
-template<class T> Vector2<T> operator*(const Vector2<T> & p, const T q)
+template<typename T> Vector2<T> operator*(const Vector2<T> & p, const T q)
 {
 	return Vector2<T>(p.x * q, p.y * q);
 }
-template<class T> Vector2<T> operator*(const T q, const Vector2<T> & p)
+template<typename T> Vector2<T> operator*(const T q, const Vector2<T> & p)
 {
 	return Vector2<T>(p.x * q, p.y * q);
 }
-template<class T> Vector2<T> operator/(const Vector2<T> & p1, const T q)
+template<typename T> Vector2<T> operator/(const Vector2<T> & p1, const T q)
 {
 	return Vector2<T>(p.x / q, p.y / q);
 }
-template<class T> Vector2<T> operator/(const T q, const Vector2<T> & p)
+template<typename T> Vector2<T> operator/(const T q, const Vector2<T> & p)
 {
 	return Vector2<T>(p.x / q, p.y / q);
 }
 
 #ifdef LGEO_IO
-template<class T> std::ofstream & operator<<(std::ofstream & o, const Vector2<T> & v)
+template<typename T> std::ofstream & operator<<(std::ofstream & o, const Vector2<T> & v)
 {
 	o << v.x << ' ' << v.y;
 	return o;
 }
-template<class T> std::ostream & operator<<(std::ostream & o, const Vector2<T> & v)
+template<typename T> std::ostream & operator<<(std::ostream & o, const Vector2<T> & v)
 {
 	o << "x:" << v.x << " y:" << v.y;
 	return o;
 }
-template<class T> std::istream & operator>>(std::istream & i, Vector2<T> & v)
+template<typename T> std::istream & operator>>(std::istream & i, Vector2<T> & v)
 {
 	i >> v.x >> v.y;
 	return i;

@@ -3,62 +3,63 @@
 #include <math.h>
 #include "../vector/vector2.h"
 
-template<class T> class Line
+template<typename T> class Line
 {
 public:
-	Vector2<T> slope, source;
+	Vector2<T> pitch, source;
 
 	Line() {}
 	Line(const Vector2<T> & v1, const Vector2<T> & v2)
 	{
-		slope = Vector2<T>(v1.x - v2.x, v1.y - v2.y);
-		//Ensure that slope has a positive x value:
-		if(slope.x < 0) slope *= -1;
-		//Ensure slope has a magnitude of 1.
-		slope /= sqrt(slope.x * slope.x + slope.y * slope.y);
-		if(slope.x == 0 && slope.y < 0) slope.y *= -1;
+		pitch = Vector2<T>(v1.x - v2.x, v1.y - v2.y);
+		//Ensure that pitch has a positive x value:
+		if(pitch.x < 0) pitch *= -1;
+		//Ensure pitch has a magnitude of 1.
+		pitch /= sqrt(pitch.x * pitch.x + pitch.y * pitch.y);
+		if(pitch.x == 0 && pitch.y < 0) pitch.y *= -1;
 		//To keep things regular, we need to make the source as small as possible. This will happen at the intersection with a perpendicular through the origin.
 		source = v1;
-		Vector2<T> perp = slope.y > 0 ? Vector2<T>{ slope.y, -slope.x } : Vector2<T>{ -slope.y, slope.x };
+		Vector2<T> perp = pitch.y > 0 ? Vector2<T>{ pitch.y, -pitch.x } : Vector2<T>{ -pitch.y, pitch.x };
 		//Solve for intersection:
-		T s = (slope.x * source.y - slope.y * source.x) / T(slope.x * perp.y - slope.y * perp.x);
+		T s = (pitch.x * source.y - pitch.y * source.x) / T(pitch.x * perp.y - pitch.y * perp.x);
 		source = perp * s;
 	}
-	template<class T2> Line<T>& operator=(const Line<T2> & s)
+	template<typename T2> Line<T>& operator=(const Line<T2> & s)
 	{
-		slope = s.slope;
+		pitch = s.pitch;
 		source = s.source;
 		return *this;
 	}
 	bool contains(const Vector2<T> & v) const
 	{
-		return v.y - (slope.y * v.x / slope.x) == source.y;
+		return v.y - (pitch.y * v.x / pitch.x) == source.y;
 	}
-	T getYFromX(T x)
+	T getYFromX(T x) const
 	{
-		return slope.y * (x - source.x) / slope.x + source.y;
+		if(pitch.x == 0) throw x == source.x ? Failure::INFINITE_ANSWERS : Failure::NO_ANSWER;
+		return pitch.y * (x - source.x) / pitch.x + source.y;
 	}
-	T getXFromY(T y)
+	T getXFromY(T y) const
 	{
-		return slope.x * (y - source.y) / slope.y + source.x;
+		return pitch.x * (y - source.y) / pitch.y + source.x;
 	}
 };
 
-template<class T> bool operator==(const Line<T> & l1, const Line<T> & l2)
+template<typename T> bool operator==(const Line<T> & l1, const Line<T> & l2)
 {
-	return l1.slope == l2.slope && l1.source == l2.source;
+	return l1.pitch == l2.pitch && l1.source == l2.source;
 }
-template<class T> Relation intersects(const Line<T> & l1, const Line<T> & l2)
+template<typename T> Relation intersects(const Line<T> & l1, const Line<T> & l2)
 {
-	return l1.slope != l2.slope ? Relation::INTERSECTION : l1.source == l2.source ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
+	return l1.pitch != l2.pitch ? Relation::INTERSECTION : l1.source == l2.source ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
 }
-template<class T> Vector2<T> intersection(const Line<T> & l1, const Line<T> & l2)
+template<typename T> Vector2<T> intersection(const Line<T> & l1, const Line<T> & l2)
 {
 	Relation r = intersects(l1, l2);
 	if(r == Relation::INTERSECTION)
 	{
-		T s = (l1.slope.x * (l1.source.y - l2.source.y) - l1.slope.y * (l1.source.x - l2.source.x)) / T(l1.slope.x * l2.slope.y - l1.slope.y * l2.slope.x);
-		return l2.slope * s + l2.source;
+		T s = (l1.pitch.x * (l1.source.y - l2.source.y) - l1.pitch.y * (l1.source.x - l2.source.x)) / T(l1.pitch.x * l2.pitch.y - l1.pitch.y * l2.pitch.x);
+		return l2.pitch * s + l2.source;
 	}
 	throw r;
 }

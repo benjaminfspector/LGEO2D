@@ -4,10 +4,16 @@
 #include <iostream>
 #endif
 
-namespace lgeo
-{
-enum Relation
-{
+namespace lgeo {
+template<typename T> char sign(T x) {
+	return (x > 0) - (x < 0);
+}
+
+enum Failure {
+	NO_ANSWER,
+	INFINITE_ANSWERS
+};
+enum Relation {
 	NO_INTERSECTION,
 	INTERSECTION,
 	CONCURRENT

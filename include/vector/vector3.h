@@ -1,6 +1,6 @@
 #pragma once
 
-template<class T> class Vector3
+template<typename T> class Vector3
 {
 public:
 	T x, y, z;
@@ -12,7 +12,7 @@ public:
 		y = yN;
 		z = zN;
 	}
-	template<class T2> Vector3<T>& operator=(const Vector3<T2> & p)
+	template<typename T2> Vector3<T>& operator=(const Vector3<T2> & p)
 	{
 		x = p.x;
 		y = p.y;
@@ -49,51 +49,51 @@ public:
 	}
 };
 
-template<class T> bool operator==(const Vector3<T> & p1, const Vector3<T> & p2)
+template<typename T> bool operator==(const Vector3<T> & p1, const Vector3<T> & p2)
 {
 	return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
 }
-template<class T> bool operator!=(const Vector3<T> & p1, const Vector3<T> & p2)
+template<typename T> bool operator!=(const Vector3<T> & p1, const Vector3<T> & p2)
 {
 	return p1.x != p2.x || p1.y != p2.y || p1.z != p2.z;
 }
-template<class T> Vector3<T> operator+(const Vector3<T> & p1, const Vector3<T> & p2)
+template<typename T> Vector3<T> operator+(const Vector3<T> & p1, const Vector3<T> & p2)
 {
 	return Vector3<T>(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);
 }
-template<class T> Vector3<T> operator-(const Vector3<T> & p1, const Vector3<T> & p2)
+template<typename T> Vector3<T> operator-(const Vector3<T> & p1, const Vector3<T> & p2)
 {
 	return Vector3<T>(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
 }
-template<class T> Vector3<T> operator*(const Vector3<T> & p, const T q)
+template<typename T> Vector3<T> operator*(const Vector3<T> & p, const T q)
 {
 	return Vector3<T>(p.x * q, p.y * q, p.z * q);
 }
-template<class T> Vector3<T> operator*(const T q, const Vector3<T> & p)
+template<typename T> Vector3<T> operator*(const T q, const Vector3<T> & p)
 {
 	return Vector3<T>(p.x * q, p.y * q, p.z * q);
 }
-template<class T> Vector3<T> operator/(const Vector3<T> & p, const T q)
+template<typename T> Vector3<T> operator/(const Vector3<T> & p, const T q)
 {
 	return Vector3<T>(p.x / q, p.y / q, p.z / q);
 }
-template<class T> Vector3<T> operator/(const T q, const Vector3<T> & p)
+template<typename T> Vector3<T> operator/(const T q, const Vector3<T> & p)
 {
 	return Vector3<T>(p.x / q, p.y / q, p.z / q);
 }
 
 #ifdef LGEO_IO
-template<class T> std::ofstream & operator<<(std::ofstream & o, const Vector3<T> & v)
+template<typename T> std::ofstream & operator<<(std::ofstream & o, const Vector3<T> & v)
 {
 	o << v.x << ' ' << v.y << ' ' << v.z;
 	return o;
 }
-template<class T> std::ostream & operator<<(std::ostream & o, const Vector3<T> & v)
+template<typename T> std::ostream & operator<<(std::ostream & o, const Vector3<T> & v)
 {
 	o << "x:" << v.x << " y:" << v.y << " z:" << v.z;
 	return o;
 }
-template<class T> std::istream & operator>>(std::istream & i, Vector3<T> & v)
+template<typename T> std::istream & operator>>(std::istream & i, Vector3<T> & v)
 {
 	i >> v.x >> v.y >> v.z;
 	return i;
