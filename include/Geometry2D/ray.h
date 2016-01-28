@@ -3,10 +3,12 @@
 #include <math.h>
 #include "../vector/vector2.h"
 
-template<class T> class Ray
+template<typename T> class Ray
 {
+private:
+	Vector2<T> pitch;
 public:
-	Vector2<T> pitch, source;
+	Vector2<T> source;
 
 	Ray() {}
 	Ray(const Vector2<T> & src, const Vector2<T> & anotherPoint) {
@@ -15,7 +17,7 @@ public:
 		//Ensure pitch has a magnitude of 1.
 		pitch /= sqrt(pitch.x * pitch.x + pitch.y * pitch.y);
 	}
-	template<class T2> Line<T>& operator=(const Ray<T2> & s) {
+	template<typename U> Line<T>& operator=(const Ray<U> & s) {
 		pitch = s.pitch;
 		source = s.source;
 		return *this;
@@ -23,6 +25,13 @@ public:
 	bool contains(const Vector2<T> & v) const {
 		return sign(v.x - source.x) != -sign(pitch.x) && sign(v.y - source.y) != -sign(pitch.y);
 	}
+	Vector2<T> getPitch() const {
+		return pitch;
+	};
+	template<typename U = T> U getSlope() const {
+		if(pitch.x == 0) throw Failure::NO_ANSWER;
+		return pitch.y / U(pitch.x);
+	};
 	T getYFromX(T x) const {
 		if(sign(x - source.x) != sign(pitch.x)) throw Failure::NO_ANSWER;
 		else if(pitch.x == 0) throw Failure::INFINITE_ANSWERS;
@@ -33,13 +42,19 @@ public:
 		else if(pitch.y == 0) throw Failure::INFINITE_ANSWERS;
 		return pitch.x * (y - source.y) / pitch.y + source.x;
 	}
+
+#ifdef LGEO_IO
+	template<typename U> friend std::ofstream & operator<<(std::ofstream & o, const Ray<U> & r2);
+	template<typename U> friend std::ostream & operator<<(std::ostream & o, const Ray<U> & r2);
+	template<typename U> friend std::istream & operator>>(std::istream & i, Ray<U> & r2);
+#endif
 };
 
-template<class T> bool operator==(const Ray<T> & r1, const Ray<T> & r2)
+template<typename T> bool operator==(const Ray<T> & r1, const Ray<T> & r2)
 {
 	return r1.pitch == r2.pitch && r1.source == r2.source;
 }
-template<class T> Relation intersects(const Ray<T> & r1, const Ray<T> & r2)
+template<typename T> Relation intersects(const Ray<T> & r1, const Ray<T> & r2)
 {
 	Vector2<T> ds = r2.source - r1.source;
 	T det = r2.pitch.x * r1.pitch.y - r2.pitch.y * r1.pitch.x;
@@ -49,7 +64,7 @@ template<class T> Relation intersects(const Ray<T> & r1, const Ray<T> & r2)
 	if(u >= 0 && v >= 0) return Relation::INTERSECTION;
 	return Relation::NO_INTERSECTION;
 }
-template<class T> Vector2<T> intersection(const Ray<T> & r1, const Ray<T> & r2)
+template<typename T> Vector2<T> intersection(const Ray<T> & r1, const Ray<T> & r2)
 {
 	Vector2<T> ds = r2.source - r1.source;
 	T det = r2.pitch.x * r1.pitch.y - r2.pitch.y * r1.pitch.x;
@@ -59,6 +74,29 @@ template<class T> Vector2<T> intersection(const Ray<T> & r1, const Ray<T> & r2)
 	if(u < 0 || v < 0) throw Relation::NO_INTERSECTION;
 	return r1.source + (r1.pitch * u);
 }
+
+#ifdef LGEO_IO
+template<typename U> std::ofstream & operator<<(std::ofstream & o, const Ray<U> & r) {
+	//Output values:
+	o << r.source << ' ' << r.pitch;
+	//Return modified ofstream (to allow chaining):
+	return o;
+}
+template<typename U> std::ostream & operator<<(std::ostream & o, const Ray<U> & r) {
+	//Output values:
+	o << "Source: " << r.source << ", Pitch: " << r.pitch;
+	//Return modified ostream (to allow chaining):
+	return o;
+}
+template<typename U> std::istream & operator>>(std::istream & i, Ray<U> & r) {
+	//Read in values:
+	i >> r.source >> r.pitch;
+	//Ensure pitch has a magnitude of 1.
+	pitch /= sqrt(pitch.x * pitch.x + pitch.y * pitch.y);
+	//Return modified istream (to allow chaining):
+	return i;
+}
+#endif
 
 typedef Ray<float> RayF;
 typedef Ray<double> RayD;

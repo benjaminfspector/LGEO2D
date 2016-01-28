@@ -8,11 +8,10 @@
 #include <iostream>
 #include <fstream>
 
-#define TEST_SIZE 10000000
+#define TEST_SIZE 10
 
 int main() {
 	srand(time(NULL));
-	//lgeo::Vector2D * results = new lgeo::Vector2D[TEST_SIZE];
 
 	timerInit(2800000000ll);
 
@@ -21,7 +20,7 @@ int main() {
 	setup(TEST_SIZE);
 
 	for(int a = 0; a < TEST_SIZE; a++) {
-		l1.contains({ 2.4f, 39.8f });
+		std::cout << lgeo::RayF{ { 0, 43 }, { 12, 27 } } << '\n';
 	}
 
 	stop();
