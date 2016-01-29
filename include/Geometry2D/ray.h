@@ -43,6 +43,10 @@ public:
 		return pitch.x * (y - source.y) / pitch.y + source.x;
 	}
 
+	template<typename U> friend bool operator==(const Ray<U> & r1, const Ray<U> & r2);
+	template<typename U> friend Relation intersects(const Ray<U> & r1, const Ray<U> & r2);
+	template<typename U> friend Vector2<U> intersection(const Ray<U> & r1, const Ray<U> & r2);
+
 #ifdef LGEO_IO
 	template<typename U> friend std::ofstream & operator<<(std::ofstream & o, const Ray<U> & r2);
 	template<typename U> friend std::ostream & operator<<(std::ostream & o, const Ray<U> & r2);
@@ -50,27 +54,27 @@ public:
 #endif
 };
 
-template<typename T> bool operator==(const Ray<T> & r1, const Ray<T> & r2)
+template<typename U> bool operator==(const Ray<U> & r1, const Ray<U> & r2)
 {
 	return r1.pitch == r2.pitch && r1.source == r2.source;
 }
-template<typename T> Relation intersects(const Ray<T> & r1, const Ray<T> & r2)
+template<typename U> Relation intersects(const Ray<U> & r1, const Ray<U> & r2)
 {
-	Vector2<T> ds = r2.source - r1.source;
-	T det = r2.pitch.x * r1.pitch.y - r2.pitch.y * r1.pitch.x;
+	Vector2<U> ds = r2.source - r1.source;
+	U det = r2.pitch.x * r1.pitch.y - r2.pitch.y * r1.pitch.x;
 	if(det == 0) return r1.contains(r2.source) || r2.contains(r1.source) ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
-	T u = (ds.y * r2.pitch.x - ds.x * r2.pitch.y) / det;
-	T v = (ds.y * r1.pitch.x - ds.x * r1.pitch.y) / det;
+	U u = (ds.y * r2.pitch.x - ds.x * r2.pitch.y) / det;
+	U v = (ds.y * r1.pitch.x - ds.x * r1.pitch.y) / det;
 	if(u >= 0 && v >= 0) return Relation::INTERSECTION;
 	return Relation::NO_INTERSECTION;
 }
-template<typename T> Vector2<T> intersection(const Ray<T> & r1, const Ray<T> & r2)
+template<typename U> Vector2<U> intersection(const Ray<U> & r1, const Ray<U> & r2)
 {
-	Vector2<T> ds = r2.source - r1.source;
-	T det = r2.pitch.x * r1.pitch.y - r2.pitch.y * r1.pitch.x;
+	Vector2<U> ds = r2.source - r1.source;
+	U det = r2.pitch.x * r1.pitch.y - r2.pitch.y * r1.pitch.x;
 	if(det == 0) throw r1.contains(r2.source) || r2.contains(r1.source) ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
-	T u = (ds.y * r2.pitch.x - ds.x * r2.pitch.y) / det;
-	T v = (ds.y * r1.pitch.x - ds.x * r1.pitch.y) / det;
+	U u = (ds.y * r2.pitch.x - ds.x * r2.pitch.y) / det;
+	U v = (ds.y * r1.pitch.x - ds.x * r1.pitch.y) / det;
 	if(u < 0 || v < 0) throw Relation::NO_INTERSECTION;
 	return r1.source + (r1.pitch * u);
 }

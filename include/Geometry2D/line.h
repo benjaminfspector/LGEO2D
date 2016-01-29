@@ -50,6 +50,10 @@ public:
 		return pitch.x * (y - source.y) / pitch.y + source.x;
 	}
 
+	template<typename U> friend bool operator==(const Line<U> & l1, const Line<U> & l2);
+	template<typename U> friend Relation intersects(const Line<U> & l1, const Line<U> & l2);
+	template<typename U> friend Vector2<U> intersection(const Line<U> & l1, const Line<U> & l2);
+
 #ifdef LGEO_IO
 	template<typename U> friend std::ofstream & operator<<(std::ofstream & o, const Line<U> & r2);
 	template<typename U> friend std::ostream & operator<<(std::ostream & o, const Line<U> & r2);
@@ -57,16 +61,16 @@ public:
 #endif
 };
 
-template<typename T> bool operator==(const Line<T> & l1, const Line<T> & l2) {
+template<typename U> bool operator==(const Line<U> & l1, const Line<U> & l2) {
 	return l1.pitch == l2.pitch && l1.source == l2.source;
 }
-template<typename T> Relation intersects(const Line<T> & l1, const Line<T> & l2) {
+template<typename U> Relation intersects(const Line<U> & l1, const Line<U> & l2) {
 	return l1.pitch != l2.pitch ? Relation::INTERSECTION : l1.source == l2.source ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
 }
-template<typename T> Vector2<T> intersection(const Line<T> & l1, const Line<T> & l2) {
+template<typename U> Vector2<U> intersection(const Line<U> & l1, const Line<U> & l2) {
 	Relation r = intersects(l1, l2);
 	if(r == Relation::INTERSECTION) {
-		T s = (l1.pitch.x * (l1.source.y - l2.source.y) - l1.pitch.y * (l1.source.x - l2.source.x)) / T(l1.pitch.x * l2.pitch.y - l1.pitch.y * l2.pitch.x);
+		U s = (l1.pitch.x * (l1.source.y - l2.source.y) - l1.pitch.y * (l1.source.x - l2.source.x)) / U(l1.pitch.x * l2.pitch.y - l1.pitch.y * l2.pitch.x);
 		return l2.pitch * s + l2.source;
 	}
 	throw r;

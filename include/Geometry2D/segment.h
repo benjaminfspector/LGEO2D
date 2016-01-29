@@ -53,12 +53,12 @@ template<typename T> Relation intersects(const Segment<T> & s1, const Segment<T>
 }
 template<typename T> Vector2<T> intersection(const Segment<T> & s1, const Segment<T> & s2) {
 	//It's faster to do the orientation-based intersection calculation than it is to find the intersection. However, this is faster here, because it batches the solution and checking.
-	double slope1 = s1.getSlopeD(), slope2 = s2.getSlopeD();
-	double yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInU = s2.p1.y - (slope2*s2.p1.x);
+	T slope1 = s1.getSlope(), slope2 = s2.getSlope();
+	T yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInU = s2.p1.y - (slope2*s2.p1.x);
 	if(slope1 == slope2) throw yInt1 == yInU ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
 	T xVal = round((yInt1 - yInU) / (slope2 - slope1));
-	if((s1.p1.x <= s1.p2.x ? xVal >= s1.p1.x && xVal <= s1.p2.x : xVal <= s1.p1.x && xVal >= s1.p2.x) && (s2.p1.x <= s2.p2.x ? xVal >= s2.p1.x && xVal <= s2.p2.x : xVal <= s2.p1.x && xVal >= s2.p2.x)) throw Relation::NO_INTERSECTION;
-	return { xVal, round(slope1 * xVal + yInt1) };
+	if((s1.p1.x <= s1.p2.x ? xVal >= s1.p1.x && xVal <= s1.p2.x : xVal <= s1.p1.x && xVal >= s1.p2.x) && (s2.p1.x <= s2.p2.x ? xVal >= s2.p1.x && xVal <= s2.p2.x : xVal <= s2.p1.x && xVal >= s2.p2.x)) return{ xVal, round(slope1 * xVal + yInt1) };
+	throw Relation::NO_INTERSECTION; 
 }
 
 #ifdef LGEO_IO
