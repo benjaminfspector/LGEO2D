@@ -72,7 +72,7 @@ template<typename T> T distance(const Vector2<T> & p, const Vector2<T> q) {
 	T dx = p.x - q.x, dy = p.y - q.y;
 	return sqrt(dx * dx + dy * dy);
 }
-template<typename T> T angle(const Vector2<T> & p, const Vector2<T> q) {
+template<typename T> template<typename U = T> U angle(const Vector2<T> & p, const Vector2<T> q) {
 	return atan2(q.y - p.y, q.x - p.x);
 }
 
