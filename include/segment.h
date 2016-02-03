@@ -1,14 +1,14 @@
 #pragma once
 
 #include <math.h>
-#include "../vector/vector2.h"
+#include "vector.h"
 
 template<typename T> class Segment {
 public:
-	Vector2<T> p1, p2;
+	Vector<T> p1, p2;
 
 	Segment() {}
-	Segment(const Vector2<T> & v1, const Vector2<T> & v2) {
+	Segment(const Vector<T> & v1, const Vector<T> & v2) {
 		p1 = v1;
 		p2 = v2;
 	}
@@ -23,19 +23,19 @@ public:
 		return (p1.y - p2.y) / dx;
 	}
 	T getLength() const {
-		Vector2<T> dif = p2 - p1;
+		Vector<T> dif = p2 - p1;
 		return sqrt(dif.x * dif.x + dif.y * dif.y);
 	}
-	Vector2<T> getMidpoint() const {
+	Vector<T> getMidpoint() const {
 		return p1 + ((p2 - p1) / 2);
 	}
-	bool contains(const Vector2<T> & v) const {
+	bool contains(const Vector<T> & v) const {
 		Segment<T> s = { p1, v };
 		if(s.getSlopeD() != getSlopeD()) return false;
 		return p1.x < p2.x ? v.x >= p1.x && v.x <= p2.x : v.x <= p1.x && v.x >= p2.x;
 	}
 
-#ifdef LGEO_IO
+#ifdef LGEO2D_IO
 	template<typename U> friend std::ofstream & operator<<(std::ofstream & o, const Segment<U> & r2);
 	template<typename U> friend std::ostream & operator<<(std::ostream & o, const Segment<U> & r2);
 	template<typename U> friend std::istream & operator>>(std::istream & i, Segment<U> & r2);
@@ -51,17 +51,17 @@ template<typename T> Relation intersects(const Segment<T> & s1, const Segment<T>
 	else if(s1 == s2 || ((o1 == COLLINEAR || o3 == COLLINEAR) && (s2.contains(s1.p1) || s2.contains(s1.p2)))) return Relation::CONCURRENT;
 	return Relation::NO_INTERSECTION;
 }
-template<typename T> Vector2<T> intersection(const Segment<T> & s1, const Segment<T> & s2) {
+template<typename T> Vector<T> intersection(const Segment<T> & s1, const Segment<T> & s2) {
 	//It's faster to do the orientation-based intersection calculation than it is to find the intersection. However, this is faster here, because it batches the solution and checking.
 	T slope1 = s1.getSlope(), slope2 = s2.getSlope();
-	T yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInU = s2.p1.y - (slope2*s2.p1.x);
-	if(slope1 == slope2) throw yInt1 == yInU ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
-	T xVal = round((yInt1 - yInU) / (slope2 - slope1));
-	if((s1.p1.x <= s1.p2.x ? xVal >= s1.p1.x && xVal <= s1.p2.x : xVal <= s1.p1.x && xVal >= s1.p2.x) && (s2.p1.x <= s2.p2.x ? xVal >= s2.p1.x && xVal <= s2.p2.x : xVal <= s2.p1.x && xVal >= s2.p2.x)) return{ xVal, round(slope1 * xVal + yInt1) };
+	T yInt1 = s1.p1.y - (slope1 * s1.p1.x), yInt2 = s2.p1.y - (slope2*s2.p1.x);
+	if(slope1 == slope2) throw yInt1 == yInt2 ? Relation::CONCURRENT : Relation::NO_INTERSECTION;
+	T xVal = (yInt1 - yInt2) / (slope2 - slope1);
+	if((s1.p1.x <= s1.p2.x ? xVal >= s1.p1.x && xVal <= s1.p2.x : xVal <= s1.p1.x && xVal >= s1.p2.x) && (s2.p1.x <= s2.p2.x ? xVal >= s2.p1.x && xVal <= s2.p2.x : xVal <= s2.p1.x && xVal >= s2.p2.x)) return{ xVal, slope1 * xVal + yInt1 };
 	throw Relation::NO_INTERSECTION; 
 }
 
-#ifdef LGEO_IO
+#ifdef LGEO2D_IO
 template<typename U> std::ofstream & operator<<(std::ofstream & o, const Segment<U> & r) {
 	//Output values:
 	o << r.p1 << ' ' << r.p2;

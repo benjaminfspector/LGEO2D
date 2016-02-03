@@ -1,26 +1,25 @@
-#define LGEO_H
-
-#define LGEO_IO
-
-#include "include/LGEO.h"
+#define LGEO2D_IO
+#include "include/LGEO2D.h"
 #include "Timer.h"
 
 #include <iostream>
 #include <fstream>
 
-#define TEST_SIZE 20
+#define TEST_SIZE 10000
 
 int main() {
+	using namespace lgeo2d;
+
 	srand(time(NULL));
 
 	timerInit(2800000000ll);
 
-	lgeo::SegmentF l1{ { 0, 43 }, { 12, 27 } };
-	lgeo::SegmentF l2{ { 1, 43 }, { 8, 27 } };
+	SegmentF l1{ { 0, 43 }, { 12, 27 } };
+	SegmentF l2{ { 1, 43 }, { 8, 27 } };
 	setup(TEST_SIZE);
 
 	for(int a = 0; a < TEST_SIZE; a++) {
-		std::cout << lgeo::intersection(l1, l2);
+		std::cout << intersection(l1, l2);
 	}
 
 	stop();

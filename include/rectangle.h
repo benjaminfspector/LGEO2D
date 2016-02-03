@@ -1,23 +1,23 @@
 #pragma once
 
-#include "../vector/vector.h"
+#include "vector.h"
 
 /*
-The Rectangle class is internally represented with two Vector2 structs. Position represents the point with the lowest-valued coordinates within the rectangle. Size is guaranteed to always be nonnegative; if it is set to be negative, the position will be moved accordingly.
+The Rectangle class is internally represented with two Vector structs. Position represents the point with the lowest-valued coordinates within the rectangle. Size is guaranteed to always be nonnegative; if it is set to be negative, the position will be moved accordingly.
 */
 template<typename T> class Rectangle
 {
 private:
-	Vector2<T> size;
+	Vector<T> size;
 
 public:
-	Vector2<T> position;
+	Vector<T> position;
 
 	Rectangle() {
 		position = { 0, 0 };
 		size = { 0, 0 };
 	}
-	Rectangle(const Vector2<T> & pos, const Vector2<T> & s) {
+	Rectangle(const Vector<T> & pos, const Vector<T> & s) {
 		position = pos;
 		setSize(s);
 	}
@@ -26,10 +26,10 @@ public:
 		size = r.getSize();
 		return *this;
 	}
-	Vector2<T> getSize() const {
+	Vector<T> getSize() const {
 		return size;
 	}
-	void setSize(const Vector2<T> & s)
+	void setSize(const Vector<T> & s)
 	{
 		if(s.x >= 0) size.x = s.x;
 		else {
@@ -48,7 +48,7 @@ public:
 	T getPerimeter() const {
 		return size.x + size.x + size.y + size.y;
 	}
-	template<typename U> bool contains(const Vector2<U> & p) const {
+	template<typename U> bool contains(const Vector<U> & p) const {
 		return p.x >= position.x && p.x <= position.x + size.x && p.y >= position.y && p.y <= position.y + size.y;
 	}
 	template<typename U> bool contains(const Rectangle<U> & p) const {
@@ -59,7 +59,7 @@ public:
 	template<typename U> friend bool intersects(const Rectangle<U> & r1, const Rectangle<U> & r2);
 	template<typename U> friend Rectangle<U> intersection(const Rectangle<U> & r1, const Rectangle<U> & r2);
 
-#ifdef LGEO_IO
+#ifdef LGEO2D_IO
 	template<typename U> friend std::ofstream & operator<<(std::ofstream & o, const Rectangle<U> & r);
 	template<typename U> friend std::ostream & operator<<(std::ostream & o, const Rectangle<U> & r);
 	template<typename U> friend std::istream & operator>>(std::istream & i, Rectangle<U> & r);
@@ -75,14 +75,14 @@ template<typename U> bool intersects(const Rectangle<U> & r1, const Rectangle<U>
 
 template<typename U> Rectangle<U> intersection(const Rectangle<U> & r1, const Rectangle<U> & r2) {
 	if(intersects(r1, r2)) {
-		Vector2<U> min = { r1.position.x > r2.position.x ? r1.position.x : r2.position.x, r1.position.y > r2.position.y ? r1.position.y : r2.position.y };
-		Vector2<U> max = { r1.position.x + r1.size.x < r2.position.x + r2.size.x ? r1.position.x + r1.size.x : r2.position.x + r2.size.x, r1.position.y + r1.size.y < r2.position.y + r2.size.y ? r1.position.y + r1.size.y : r2.position.y + r2.size.y };
+		Vector<U> min = { r1.position.x > r2.position.x ? r1.position.x : r2.position.x, r1.position.y > r2.position.y ? r1.position.y : r2.position.y };
+		Vector<U> max = { r1.position.x + r1.size.x < r2.position.x + r2.size.x ? r1.position.x + r1.size.x : r2.position.x + r2.size.x, r1.position.y + r1.size.y < r2.position.y + r2.size.y ? r1.position.y + r1.size.y : r2.position.y + r2.size.y };
 		return Rectangle<U>(min, max - min);
 	}
 	throw NO_INTERSECTION;
 }
 
-#ifdef LGEO_IO
+#ifdef LGEO2D_IO
 template<typename U> std::ofstream & operator<<(std::ofstream & o, const Rectangle<U> & r) {
 	//Output values:
 	o << r.position << ' ' << r.size;
